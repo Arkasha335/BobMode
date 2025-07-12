@@ -2,24 +2,11 @@ package com.arkasha335.bobmode.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import java.lang.reflect.Method;
+import org.lwjgl.input.Mouse;
 
 public class PlayerControlUtils {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
-    private static Method rightClickMouseMethod;
-
-    static {
-        // Using reflection to call the private method for right-clicking.
-        // This is a common technique in 1.8.9 modding.
-        try {
-            rightClickMouseMethod = Minecraft.class.getDeclaredMethod("rightClickMouse");
-            rightClickMouseMethod.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            // In a production environment, you would log this error.
-            e.printStackTrace();
-        }
-    }
 
     public static void setPlayerRotation(float yaw, float pitch) {
         if (mc.thePlayer == null) return;
@@ -30,19 +17,26 @@ public class PlayerControlUtils {
     public static void setKeyPressed(KeyBinding key, boolean pressed) {
         KeyBinding.setKeyBindState(key.getKeyCode(), pressed);
     }
-
+    
+    /**
+     * НАДЕЖНЫЙ метод для симуляции правого клика.
+     * Он напрямую вызывает логику обработки тика для кнопки.
+     */
     public static void rightClick() {
-        // A more robust way than sending packets, as it uses the game's own logic.
-        try {
-            if (rightClickMouseMethod != null) {
-                rightClickMouseMethod.invoke(mc);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (mc.gameSettings.keyBindUseItem.getKeyCode() < 0) {
+            // Для кнопок мыши
+            KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(), true);
+            KeyBinding.onTick(mc.gameSettings.keyBindUseItem.getKeyCode());
+            KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(), false);
+        } else {
+             // Для клавиш клавиатуры (на всякий случай)
+             setKeyPressed(mc.gameSettings.keyBindUseItem, true);
+             setKeyPressed(mc.gameSettings.keyBindUseItem, false);
         }
     }
     
     public static void unpressAll() {
+        // Этот метод остается без изменений
         setKeyPressed(mc.gameSettings.keyBindForward, false);
         setKeyPressed(mc.gameSettings.keyBindBack, false);
         setKeyPressed(mc.gameSettings.keyBindLeft, false);
