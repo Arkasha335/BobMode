@@ -1,53 +1,34 @@
-# Название вашего рабочего процесса, будет отображаться в списке Actions
-name: Build BobMode Mod
+name: Build Minecraft Mod
 
-# Триггеры: когда запускать этот процесс
 on:
-  # Запускать при каждом 'push' (загрузке кода) в ветку 'main'
   push:
     branches: [ "main" ]
-  # Также запускать при создании Pull Request в ветку 'main'
   pull_request:
     branches: [ "main" ]
 
-# Задачи, которые нужно выполнить
 jobs:
-  # Название задачи (может быть любым, например 'build-the-mod')
   build:
-    # На какой операционной системе запускать (виртуальная машина)
     runs-on: ubuntu-latest
 
-    # Шаги, которые будут выполнены последовательно
     steps:
-    # Шаг 1: Клонирование вашего репозитория
-    # 'uses' означает использование готового экшена от сообщества
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4 # ОБНОВЛЕНО с v3 до v4
 
-    # Шаг 2: Установка нужной версии Java (Java 8 для Minecraft 1.8.9)
     - name: Set up JDK 1.8
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4 # Также обновлено для консистентности
       with:
         java-version: '8'
         distribution: 'temurin'
-        cache: 'gradle' # Кэшировать зависимости Gradle для ускорения будущих сборок
+        cache: 'gradle'
 
-    # Шаг 3: Предоставление прав на выполнение для Gradle Wrapper
-    # В Linux/macOS файлы должны иметь разрешение на запуск
     - name: Make gradlew executable
       run: chmod +x ./gradlew
 
-    # Шаг 4: Главная команда для сборки проекта
-    # Запускает задачу 'build' из вашего файла build.gradle
     - name: Build with Gradle
       run: ./gradlew build
 
-    # Шаг 5: Загрузка результата (собранного .jar файла) как артефакта
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4 # <-- ГЛАВНОЕ ИСПРАВЛЕНИЕ: обновлено с v3 до v4
       with:
-        # Название артефакта, которое вы увидите при скачивании
-        name: BobMode-1.8.9-release
-        # Путь к файлу, который нужно загрузить.
-        # Звездочка (*) означает "любые символы". Это найдет файл, даже если версия изменится.
+        name: BobMode-1.8.9
         path: build/libs/bobmode-*.jar
