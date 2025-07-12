@@ -1,7 +1,6 @@
 package com.arkasha335.bobmode.handler;
 
 import com.arkasha335.bobmode.manager.BridgingManager;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -13,7 +12,7 @@ public class RenderHandler {
 
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent.Text event) {
-        if (mc.theWorld == null || mc.thePlayer == null) return;
+        if (mc.theWorld == null || mc.thePlayer == null || mc.gameSettings.showDebugInfo) return;
         
         BridgingManager manager = BridgingManager.getInstance();
         FontRenderer fr = mc.fontRendererObj;
@@ -25,6 +24,7 @@ public class RenderHandler {
             statusText = "§cBobMode: OFF";
         }
 
-        fr.drawStringWithShadow(statusText, 5, 5, 0xFFFFFF);
+        // Смещаем индикатор. 5 по X, 15 по Y (вместо 5).
+        fr.drawStringWithShadow(statusText, 5, 15, 0xFFFFFF);
     }
 }
