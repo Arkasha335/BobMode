@@ -1,4 +1,4 @@
-package com.Arkasha335.bobmode.config;
+package com.arkasha335.bobmode.config;
 
 import net.minecraftforge.common.config.Configuration;
 import java.io.File;

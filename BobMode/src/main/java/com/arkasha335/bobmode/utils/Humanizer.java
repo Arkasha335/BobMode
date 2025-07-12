@@ -1,7 +1,8 @@
-package com.Arkasha335.bobmode.utils;
+package com.arkasha335.bobmode.utils;
 
-import com.Arkasha335.bobmode.config.ModConfig;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.arkasha335.bobmode.config.ModConfig;
 
 public class Humanizer {
 

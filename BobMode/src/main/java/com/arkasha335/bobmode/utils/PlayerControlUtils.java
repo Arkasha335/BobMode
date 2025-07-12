@@ -1,4 +1,4 @@
-package com.Arkasha335.bobmode.utils;
+package com.arkasha335.bobmode.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;

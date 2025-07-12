@@ -1,4 +1,4 @@
-package com.Arkasha335.bobmode.handler;
+package com.arkasha335.bobmode.handler;
 
 import com.arkasha335.bobmode.manager.BridgingManager;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
