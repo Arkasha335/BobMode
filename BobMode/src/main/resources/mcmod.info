@@ -1,0 +1,16 @@
+ [
+  {
+    "modid": "bobmode",
+    "name": "BobMode",
+    "description": "An advanced bridging assistance mod.",
+    "version": "${version}",
+    "mcversion": "1.8.9",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["Arkasha335"],
+    "credits": "Developed with the assistance of an AI architect.",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
