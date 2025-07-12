@@ -1,6 +1,7 @@
 package com.arkasha335.bobmode.strategy.impl;
 
 import com.arkasha335.bobmode.config.ModConfig;
+import com.arkasha335.bobmode.manager.BridgingManager; // <-- Важный импорт
 import com.arkasha335.bobmode.strategy.IBridgeStrategy;
 import com.arkasha335.bobmode.utils.Humanizer;
 import com.arkasha335.bobmode.utils.PlayerControlUtils;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemBlock;
 public class NinjaBridgeStrategy implements IBridgeStrategy {
 
     private final Minecraft mc = Minecraft.getMinecraft();
+    private final BridgingManager bridgingManager = BridgingManager.getInstance();
 
     private float originalYaw, originalPitch;
     private float targetYaw;
@@ -54,7 +56,7 @@ public class NinjaBridgeStrategy implements IBridgeStrategy {
     public void onTick() {
         // Safety check: ensure player is holding blocks
         if (mc.thePlayer.getHeldItem() == null || !(mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) {
-            BridgingManager.getInstance().deactivate(); // Using the manager's public method
+            bridgingManager.deactivate(); // Используем поле класса
             return;
         }
         
@@ -67,10 +69,11 @@ public class NinjaBridgeStrategy implements IBridgeStrategy {
         // 2. Movement Control (always active)
         PlayerControlUtils.setKeyPressed(mc.gameSettings.keyBindBack, true);
         // Determine direction based on yaw (simplistic but effective)
-        if (((int)targetYaw % 180) != 0) { // Assuming diagonal
+        if (((int)targetYaw % 90) != 0) { // More robust check for diagonals (45, 135, etc.)
             PlayerControlUtils.setKeyPressed(mc.gameSettings.keyBindRight, true);
+            PlayerControlUtils.setKeyPressed(mc.gameSettings.keyBindLeft, false);
         } else {
-             PlayerControlUtils.setKeyPressed(mc.gameSettings.keyBindLeft, false); // Turn off just in case
+             PlayerControlUtils.setKeyPressed(mc.gameSettings.keyBindRight, false); // Turn off just in case
         }
         
         // 3. State Machine for Shift & Clicks
@@ -108,6 +111,9 @@ public class NinjaBridgeStrategy implements IBridgeStrategy {
                     ticksSinceLastAction = 0;
                     placedSinceSneak = false;
                 }
+                break;
+            case IDLE:
+                // Default case to avoid null state
                 break;
         }
     }

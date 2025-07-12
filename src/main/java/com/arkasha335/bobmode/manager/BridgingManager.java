@@ -1,4 +1,3 @@
-java
 package com.arkasha335.bobmode.manager;
 
 import com.arkasha335.bobmode.strategy.IBridgeStrategy;
@@ -30,6 +29,7 @@ public class BridgingManager {
         if (isActive) {
             deactivate();
         }
+        if (mc.thePlayer == null) return; // Дополнительная проверка безопасности
         this.currentStrategy = strategy;
         this.isActive = true;
         this.currentStrategy.onEnable();
@@ -44,7 +44,7 @@ public class BridgingManager {
     }
     
     public void onTick() {
-        // Central safety checks
+        // Центральные проверки безопасности
         if (!isActive || currentStrategy == null || mc.thePlayer == null || mc.currentScreen != null) {
             if (isActive) {
                 deactivate();
